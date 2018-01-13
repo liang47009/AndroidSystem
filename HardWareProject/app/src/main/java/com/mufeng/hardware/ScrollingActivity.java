@@ -1,4 +1,4 @@
-package com.mufeng.myapplication1;
+package com.mufeng.hardware;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;

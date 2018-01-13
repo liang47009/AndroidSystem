@@ -21,19 +21,19 @@ JNIEXPORT void JNI_OnUnload(JavaVM *, void *) {
 }
 
 JNIEXPORT jstring JNICALL
-Java_com_mufeng_myapplication1_MainActivity_stringFromJNI(JNIEnv *env, jobject) {
+Java_com_mufeng_hardware_MainActivity_stringFromJNI(JNIEnv *env, jobject) {
     std::string hello = "Hello from C++";
     return env->NewStringUTF(hello.c_str());
 }
 
 JNIEXPORT jstring JNICALL
-Java_com_mufeng_myapplication1_MainActivity_dlerror(JNIEnv *env, jobject) {
+Java_com_mufeng_hardware_MainActivity_dlerror(JNIEnv *env, jobject) {
     char const *err_str = dlerror();
     return env->NewStringUTF(err_str);
 }
 
 JNIEXPORT void JNICALL
-Java_com_mufeng_myapplication1_MainActivity_queryHardWare(JNIEnv *env, jobject, jstring libPath,
+Java_com_mufeng_hardware_MainActivity_queryHardWare(JNIEnv *env, jobject, jstring libPath,
                                                           jstring libName) {
     hw_module_t const *module;
     const char *cLibPath = env->GetStringUTFChars(libPath, NULL);

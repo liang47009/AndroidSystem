@@ -1,4 +1,4 @@
-package com.mufeng.myapplication1
+package com.mufeng.hardware
 
 import android.content.Context
 import android.os.Bundle

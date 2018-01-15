@@ -7,6 +7,4 @@ cmake_minimum_required(VERSION 3.4.1)
 
 include_directories(include)
 
-add_library( hardware SHARED linker.c hardware.c properties.cpp)
-
-target_link_libraries( hardware log dl )
+add_library( hardware STATIC linker.c hardware.c properties.cpp)

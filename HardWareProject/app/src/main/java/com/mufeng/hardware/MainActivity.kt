@@ -20,7 +20,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        val dir = getDir("libs", Context.MODE_PRIVATE)
+        setPrvLibPath(dir.absolutePath)
         // Example of a call to a native method
         val tv = findViewById(R.id.sample_text) as TextView
         tv.text = stringFromJNI()
@@ -66,7 +67,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun nativeQueryHardware(dir: File, name: String) {
-        queryHardWare(dir.absolutePath, name)
+        queryHardWare(name)
         val error = dlerror()
         if (TextUtils.isEmpty(error)) {
             Log.d(TAG, "nativeQueryHardware no dlerror")
@@ -184,13 +185,14 @@ class MainActivity : AppCompatActivity() {
 
     external fun dlerror(): String
 
-    external fun queryHardWare(libPath: String, libName: String)
+    external fun setPrvLibPath(absoluteFile: String)
+
+    external fun queryHardWare(libName: String)
 
     companion object {
 
         // Used to load the 'native-lib' library on application startup.
         init {
-            System.loadLibrary("hardware")
             System.loadLibrary("app")
         }
     }

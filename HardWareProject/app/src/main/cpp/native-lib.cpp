@@ -7,6 +7,9 @@
 #define LOGI(...) __android_log_print(ANDROID_LOG_INFO, "MyApp", __VA_ARGS__)
 
 extern "C" {
+
+char *private_lib_path = NULL;
+
 /*
  * Prototypes for functions exported by loadable shared libs.  These are
  * called by JNI, not provided by JNI.
@@ -33,11 +36,22 @@ Java_com_mufeng_hardware_MainActivity_dlerror(JNIEnv *env, jobject) {
 }
 
 JNIEXPORT void JNICALL
-Java_com_mufeng_hardware_MainActivity_queryHardWare(JNIEnv *env, jobject, jstring libPath,
-                                                          jstring libName) {
-    hw_module_t const *module;
+Java_com_mufeng_hardware_MainActivity_setPrvLibPath(JNIEnv *env, jobject, jstring libPath) {
     const char *cLibPath = env->GetStringUTFChars(libPath, NULL);
+    if (!private_lib_path) {
+        size_t size = strlen(cLibPath);
+        private_lib_path = new char[size + 1];
+        memcpy(private_lib_path, cLibPath, size);
+        private_lib_path[size] = 0;
+    }
+    env->ReleaseStringUTFChars(libPath, cLibPath);
+}
+
+JNIEXPORT void JNICALL
+Java_com_mufeng_hardware_MainActivity_queryHardWare(JNIEnv *env, jobject, jstring libName) {
+    hw_module_t const *module;
     const char *cLibName = env->GetStringUTFChars(libName, NULL);
+
     if (hw_get_module(cLibName, &module) == 0) {
         LOGI("Opened %s Module", cLibName);
         LOGI("module->author: %s", module->author);
@@ -58,7 +72,6 @@ Java_com_mufeng_hardware_MainActivity_queryHardWare(JNIEnv *env, jobject, jstrin
         LOGI("%s HW Module not found", cLibName);
     }
 
-    env->ReleaseStringUTFChars(libPath, cLibPath);
     env->ReleaseStringUTFChars(libName, cLibName);
 }
 

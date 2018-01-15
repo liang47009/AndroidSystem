@@ -135,13 +135,15 @@ static int load(const char *id,
     return status;
 }
 
+extern char *private_lib_path;
+
 /*
  * Check if a HAL with given name and subname exists, if so return 0, otherwise
  * otherwise return negative.  On success path will contain the path to the HAL.
  */
 static int hw_module_exists(char *path, size_t path_len, const char *name,
                             const char *subname) {
-    snprintf(path, path_len, "%s/%s.%s.so", HAL_LIBRARY_PATH4, name, subname);
+    snprintf(path, path_len, "%s/%s.%s.so", private_lib_path, name, subname);
     if (access(path, R_OK) == 0)
         return 0;
 
